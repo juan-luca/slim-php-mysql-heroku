@@ -36,6 +36,9 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
+    $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
+    $group->put('/{usuarioId}', \UsuarioController::class . ':ModificarUno');
+    
   });
 
 $app->get('[/]', function (Request $request, Response $response) {    
