@@ -42,9 +42,10 @@ class Usuario
     public static function modificarUsuario($id,$usuario,$clave)
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
+        $claveHash = password_hash($clave, PASSWORD_DEFAULT);
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave WHERE id = :id");
         $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $clave, PDO::PARAM_STR);
+        $consulta->bindValue(':clave', $claveHash, PDO::PARAM_STR);
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         return $consulta->execute();
     }

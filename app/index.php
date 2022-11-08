@@ -17,6 +17,7 @@ require_once './db/AccesoDatos.php';
 // require_once './middlewares/Logger.php';
 
 require_once './controllers/UsuarioController.php';
+require_once './middlewares/Logger.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -38,8 +39,11 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
     $group->delete('/{usuarioId}', \UsuarioController::class . ':BorrarUno');
     $group->put('/{usuarioId}', \UsuarioController::class . ':ModificarUno');
+    $group->post('/login', \UsuarioController::class . ':Login')->add(new LoggerMiddleware());
     
   });
+
+ 
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $response->getBody()->write("Slim Framework 4 PHP");
