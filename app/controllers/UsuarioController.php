@@ -31,14 +31,39 @@ class UsuarioController extends Usuario implements IApiUsable
         $clave = $parametros['clave'];
         $usuario = Usuario::obtenerUsuario($nombre);
         $retorno="error";
+
+        if ($parametros != null) {
+          if (count($parametros) == 2) {
+
+              
+              
+              if(password_verify($clave,$usuario->clave))
+              {
+                $token=AutentificadorJWT::CrearToken($parametros);
+                $retorno=$token;
+              }else
+              {
+                $retorno="clave incorrecta";
+              }
+
+              
+              
+
+          } else {
+              foreach ($parametros as $item  => $value) {
+                  if ($item == "clave") {
+                      $retorno = "Falta ingresar el usuario";
+                  } else {
+                      $retorno = "Falta ingresar la clave";
+                  }
+              }
+          }
+      } else {
+          $retorno = "No hay parametros";
+      }
+
         
-        if(password_verify($clave,$usuario->clave))
-        {
-          $retorno="Usuario verificado";
-        }else
-        {
-          $retorno="clave incorrecta";
-        }
+        
         
 
         $payload = json_encode(array("mensaje" => $retorno));
